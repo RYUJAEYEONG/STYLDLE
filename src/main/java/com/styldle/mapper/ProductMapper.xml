@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.styldle.mapper.ProductMapper">
+	
+	<select id="selectList" resultType="com.styldle.vo.ProductVO">
+		select * from product
+	</select>
+	
+	<select id="select" resultType="com.styldle.vo.ProductVO">
+		select * from product where productId = #{productId}
+	</select>
+	
+	<insert id="insert">
+		insert into product(type, productName, detail, price, stock, regDate)
+			values(#{type}, #{productName}, #{detail}, #{price}, #{stock}, now())
+	</insert>
+
+	<insert id="insertSelectKey">
+		<selectKey keyProperty="productId" order="BEFORE" resultType="int">
+			select max(productId)+1 from product
+		</selectKey>
+		insert into product(productId, type, productName, detail, price, stock, regDate)
+		values(#{productId}, #{type}, #{productName}, #{detail}, #{price}, #{stock}, now())
+	</insert>
+
+	<update id="update">
+		update product set type = #{type}, productName = #{productName},
+		                   DETAIL = #{detail}, PRICE = #{price}, STOCK = #{stock}
+							where productId = #{productId}
+	</update>
+
+	<delete id="delete">
+		delete from product where productId = #{productId}
+	</delete>
+
+	<select id="selectListWithPaging" resultType="com.styldle.vo.ProductVO">
+		select * from product where productName like concat('%', ifnull(#{keyword}, ''), '%')
+		order by productId desc limit #{pageStart}, #{perPageNum}
+	</select>
+
+	<select id="selectCategory" resultType="com.styldle.vo.ProductVO">
+		select * from product where type = #{type}
+		order by productId desc limit #{pageStart}, #{perPageNum}
+	</select>
+
+	<select id="getTotalCount" resultType="int">
+		select count(*) from product
+			where productName like concat('%', ifnull(#{keyword}, ''), '%') and productId > 0
+	</select>
+
+	<select id="getTypeCount" resultType="int">
+		select count(*) from product
+			where type = #{type}
+	</select>
+
+</mapper>

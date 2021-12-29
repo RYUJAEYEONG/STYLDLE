@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.styldle.mapper.QnaCommentMapper">
+    <insert id="insert">
+        insert into qna_comment (boardNo, userId, comment) values (#{boardNo},#{userId},#{comment})
+    </insert>
+    <select id="read" resultType="com.styldle.vo.QnaCommentVO">
+        select * from qna_comment where commentId=#{commentId}
+    </select>
+    <delete id="delete">
+        delete from qna_comment where commentId=#{commentId}
+    </delete>
+    <update id="update">
+        update qna_comment set comment=#{comment} where commentId=#{commentId}
+    </update>
+    <select id="getListWithPaging" resultType="com.styldle.vo.QnaCommentVO">
+        select
+            R1.* FROM(
+                         SELECT  /*+INDEX(qna_comment idx_qna_comment) */
+                             *
+                         FROM qna_comment where boardNo=#{boardNo}
+                     ) R1
+        order by commentId asc
+            LIMIT #{cri.startNum}, #{cri.amount}
+    </select>
+    <select id="cntByBoardNo" resultType="int">
+        select count(commentId) from qna_comment where boardNo = #{boardNo}
+    </select>
+</mapper>

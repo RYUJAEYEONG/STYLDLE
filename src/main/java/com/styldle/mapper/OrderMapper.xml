@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.styldle.mapper.OrderMapper">
+
+	<!-- 카트 담기 -->
+	<insert id="addCart">
+		insert into cart (userId, productId, count) values (#{userId}, #{productId}, #{count})
+	</insert>
+
+	<!--주문정보-->
+	<insert id="orderInfo">
+		insert into order_tbl2(orderId, userId, orderRec, postCode, roadAddress, detailAddress, orderPhone, total, orderDate) values (
+			#{orderId}, #{userId}, #{orderRec}, #{postCode}, #{roadAddress}, #{detailAddress},
+		    #{orderPhone}, #{total}, now())
+	</insert>
+
+	<!--주문 상세 정보-->
+	<insert id="orderDetailInfo">
+		insert into order_detail_tbl(orderId, productId, count)
+			values (#{orderId}, #{productId}, #{count});
+	</insert>
+
+	<select id="selectOneProc" resultType="com.styldle.vo.OrderOneProcVO">
+		select P.productId, P.productName, P.price, C.count
+			from product P inner join cart C on P.productId = C.productId
+			where P.productId = #{productId}
+	</select>
+
+	<select id="selectOneStraight" resultType="com.styldle.vo.OrderOneProcVO">
+		select productId, productName, price, #{count} as count
+			from product where productId = #{productId}
+	</select>
+
+	<delete id="deleteCart">
+		delete from cart where userId = #{userId} and productId = #{productId}
+	</delete>
+
+	<select id="selectOrderList" resultType="com.styldle.vo.OrderVO">
+		select * from order_tbl2 order by orderDate desc
+	</select>
+
+	<select id="selectOrderView" resultType="com.styldle.vo.OrderViewVO">
+		select O.*, D.orderDetailNum, D.productId, D.count, P.productName, P.price
+		    from order_tbl2 O
+				inner join order_detail_tbl D on O.orderId = D.orderId
+				inner join product P on D.productId = P.productId
+			where O.orderId = #{orderId}
+	</select>
+
+	<update id="updateDelivery">
+		update order_tbl2 set delivery = #{delivery} where orderId = #{orderId}
+	</update>
+
+	<update id="changeStock">
+		update product set stock = stock - #{stock} where productId = #{productId}
+	</update>
+
+	<select id="changeStockSub" resultType="com.styldle.vo.OrderDetailVO">
+		select orderId, productId, count from order_detail_tbl where orderId = #{orderId}
+	</select>
+
+</mapper>

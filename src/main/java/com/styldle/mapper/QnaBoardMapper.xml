@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.styldle.mapper.QnaBoardMapper">
+    <sql id="criteria">
+        <trim prefix="where (" suffix=") " prefixOverrides="OR">
+            <foreach item="type" collection="typeArr">
+                <trim prefix=" OR">
+                    <choose>
+                        <when test="type == 'T'.toString()">
+                            title like '%${keyword}%'
+                        </when>
+                        <when test="type == 'C'.toString()">
+                            content like '%${keyword}%'
+                        </when>
+                        <when test="type == 'W'.toString()">
+                            userId like '%${keyword}%'
+                        </when>
+                    </choose>
+                </trim>
+            </foreach>
+        </trim>
+    </sql>
+    <select id="getList" resultType="com.styldle.vo.QnaBoardVO">
+        select * from qna_board
+    </select>
+    <insert id="insert">
+        insert into qna_board(userId,title,content) values (#{userId},#{title},#{content})
+    </insert>
+    <select id="read" resultType="com.styldle.vo.QnaBoardVO">
+        select * from qna_board where boardNo=#{boardNo}
+    </select>
+    <delete id="delete">
+        delete from qna_board where boardNo=#{boardNo}
+    </delete>
+    <update id="update">
+        update qna_board set title=#{title}, content=#{content} where boardNo=#{boardNo}
+    </update>
+    <update id="viewcnt">
+        update qna_board set cnt = cnt +1 where boardNo = #{boardNo}
+    </update>
+    <select id="getListWithPaging" resultType="com.styldle.vo.QnaBoardVO">
+        select R1.* FROM(
+        SELECT *
+        FROM qna_board
+        <include refid="criteria"></include>
+        ) R1
+        order by boardNo desc
+        LIMIT #{startNum} , #{amount}
+    </select>
+    <select id="cntBoard" resultType="int">
+        select count(*) from qna_board
+        <include refid="criteria"></include>
+    </select>
+
+
+    <update id="replyCnt">
+        update qna_board b
+        set b.replyCnt = (select count(commentId)
+                             from qna_comment
+                             where boardNo=#{boardNo})
+        where b.boardNo=#{boardNo};
+    </update>
+</mapper>

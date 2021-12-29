@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.styldle.mapper.SnsBoardMapper">
+    <select id="getList" resultType="com.styldle.vo.SnsBoardVO">
+        select * from sns_board
+    </select>
+
+    <insert id="insert">
+        insert into sns_board(userId, content) value (#{userId}, #{content})
+    </insert>
+
+    <select id="getOne" resultType="com.styldle.vo.SnsBoardVO">
+        select * from sns_board where postId=#{postId}
+    </select>
+
+    <update id="update">
+        update sns_board set content=#{content}, date=now() where postId=#{postId}
+    </update>
+
+    <delete id="delete">
+        delete from sns_board where postId=#{postId}
+    </delete>
+
+    <!--<insert id="insertSelectKey">
+        <selectKey keyProperty="postId" order="BEFORE" resultType="int">
+            select max(postId) + 1 from sns_board
+        </selectKey>
+        insert into sns_board values(#{postId}, #{userId}, #{content}, now())
+    </insert>-->
+
+    <select id="getListWithPaging" resultType="com.styldle.vo.SnsBoardVO">
+        SELECT R1.*
+        FROM (
+            SELECT *
+            FROM sns_board
+        ) R1
+        ORDER BY postId DESC
+        LIMIT #{startNum}, #{amount}
+    </select>
+
+    <select id="getTotalCount" resultType="int">
+        select count(*) from sns_board
+    </select>
+</mapper>

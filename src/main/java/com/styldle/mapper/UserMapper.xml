@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.styldle.mapper.UserMapper">
+
+    <insert id="insert">
+        INSERT into user
+        (userId, role, name, pwd, birth, gender, phone,
+         zipCode, address, point, mail)
+        values (#{userId}, "user", #{name}, #{pwd}, #{birth},
+                #{gender}, #{phone}, #{zipCode}, #{address},
+                1000, #{mail})
+    </insert>
+
+    <select id="login" resultType="com.styldle.vo.UserVO">
+        select *
+        from user
+        where userId = #{userId}
+    </select>
+
+    <select id="updateWin">
+        update user
+        set point = point + 100
+        where userId = #{userId}
+    </select>
+
+    <select id="updateDraw">
+        update user
+        set point = point - 50
+        where userId = #{userId}
+    </select>
+
+    <select id="updateLose">
+        update user
+        set point = point - 100
+        where userId = #{userId}
+    </select>
+
+    <select id="get" resultType="com.styldle.vo.UserVO">
+        select *
+        from user
+        where userId = #{userId}
+    </select>
+
+
+    <select id="cartList" resultType="com.styldle.vo.CartListVO">
+        select cartId, productName, price, count, cart.productId
+        from product
+                 inner join cart on product.productId = cart.productId
+--                  inner join product_attach on cart.productId = product_attach.productId
+        where userId = #{userId};
+    </select>
+
+    <!--카트삭제-->
+
+    <delete id="deleteCart">
+        delete
+        from cart
+        where cartId = #{cartId}
+          and userId = #{userId}
+    </delete>
+
+    <!-- 회원탈퇴 -->
+    <delete id="userDelete">
+        delete
+        from user
+        where userId = #{userId}
+    </delete>
+
+    <select id="list" resultType="com.styldle.vo.UserVO">
+        select *
+        from user
+        where role = 'user';
+    </select>
+
+    <delete id="userBan">
+        delete
+        from user
+        where userId = #{userId}
+    </delete>
+
+
+    <update id="update">
+        update user
+        set name=#{name},
+            birth=#{birth},
+            phone=#{phone},
+            mail=#{mail},
+            zipCode=#{zipCode},
+            address=#{address}
+        where userId = #{userId}
+    </update>
+
+    <update id="updatePoint">
+        update user
+        set point=#{point}
+        where userId = #{userId}
+    </update>
+
+
+    <update id="pwdUpdate">
+        update user
+        set pwd = #{pwd}
+        where userId = #{userId}
+    </update>
+
+    <select id="orderList" resultType="com.styldle.vo.OrderListVO">
+        select *
+        from order_tbl2
+        where userId = #{userId};
+    </select>
+
+    <select id="idCheck" parameterType="com.styldle.vo.UserVO" resultType="int">
+        select count(*)
+        from user
+        where userId = #{userId};
+    </select>
+
+    <select id="getListWithPaging" resultType="com.styldle.vo.UserVO">
+    <![CDATA[
+        select *
+        from (
+                 SELECT @rownum:=@rownum+1  rnum,
+                A.*
+                 FROM
+                     user A,
+                     (SELECT @ROWNUM := 0) R
+                 WHERE
+                     role = 'user'
+                   and 1=1
+             ) list
+        WHERE rnum > (#{pageNum} - 1) * #{amount}
+          AND rnum <= #{pageNum} * #{amount};
+        ]]>
+    </select>
+
+    <select id="getTotalCount" resultType="int">
+        select count(*)
+        from user
+        where role = 'user';
+    </select>
+
+    <select id="getCart" resultType="com.styldle.vo.CartListVO">
+        select cart.cartId, product.productName, product.price, cart.count
+        from product
+                 inner join cart on product.productId = cart.productId
+
+        where cartId = #{cartId};
+    </select>
+
+    <update id="updateCart">
+        update cart
+        set count = #{count}
+        where cartId = #{cartId};
+    </update>
+
+</mapper>

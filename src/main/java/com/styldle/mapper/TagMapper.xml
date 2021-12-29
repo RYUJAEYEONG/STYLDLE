@@ -1,0 +1,24 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.styldle.mapper.TagMapper">
+    <insert id="insert">
+        insert into tag(postId, tagName, link) values ((SELECT MAX(postId) FROM sns_board), #{tagName}, #{link})
+    </insert>
+
+    <insert id="insertMany">
+        insert into tag(postId, tagName, link) values (#{postId}, #{tagName}, #{link})
+    </insert>
+
+    <select id="getList" resultType="com.styldle.vo.TagVO">
+        select * from tag where postId=#{postId}
+    </select>
+
+    <delete id="delete">
+        delete from tag where tagId=#{tagId}
+    </delete>
+
+    <delete id="deleteAll">
+        delete from tag where postId=#{postId}
+    </delete>
+</mapper>

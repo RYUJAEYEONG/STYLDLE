@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.styldle.mapper.SnsCommentMapper">
+    <insert id="insert">
+        insert into sns_comment values (null, #{postId}, #{comment}, #{userId}, now())
+    </insert>
+
+    <delete id="delete">
+        delete from sns_comment where commentId=#{commentId}
+    </delete>
+
+    <update id="update">
+        update sns_comment set comment=#{comment}, date=now() where commentId=#{commentId}
+    </update>
+
+    <select id="getListWithPaging" resultType="com.styldle.vo.SnsCommentVO">
+        <![CDATA[
+        SELECT *
+        FROM
+            (
+                SELECT
+                    @rownum:=@rownum+1  rnum,
+                A.*
+                FROM
+                    sns_comment A,
+                    (SELECT @ROWNUM := 0) R
+                WHERE
+                    postId=#{postId}
+            ) list
+        WHERE rnum > (#{cri.pageNum} - 1) * #{cri.amount} AND rnum <= #{cri.pageNum} * #{cri.amount};
+        ]]>
+    </select>
+
+    <select id="getCountByPostId" resultType="int">
+        select count(*) from sns_comment where postId=#{postId}
+    </select>
+</mapper>

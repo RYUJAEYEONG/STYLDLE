@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.styldle.mapper.StyleImgMapper">
+    <insert id="insert">
+        insert into style_img values (#{uuid}, #{uploadPath}, #{fileName}, (SELECT MAX(postId) FROM sns_board))
+    </insert>
+
+    <select id="findByPostId" resultType="com.styldle.vo.StyleImgVO">
+        select * from style_img where postId=#{postId}
+    </select>
+
+    <update id="update">
+        update style_img set uuid=#{uuid}, uploadPath=#{uploadPath}, fileName=#{fileName} where postId=#{postId}
+    </update>
+
+    <insert id="insertMany">
+        insert into style_img values (#{uuid}, #{uploadPath}, #{fileName}, #{postId})
+    </insert>
+</mapper>

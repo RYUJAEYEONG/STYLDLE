@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.styldle.mapper.QnaAttachMapper">
+    <insert id="insert">
+        INSERT INTO qna_img (uuid, uploadPath, fileName, boardNo)
+        VALUES (#{uuid}, #{uploadPath},#{fileName}, (SELECT MAX(boardNo) FROM qna_board));
+    </insert>
+    <delete id="delete">
+        delete from qna_img where uuid=#{uuid}
+    </delete>
+    <select id="findByBoardNo" resultType="com.styldle.vo.QnaBoardAttachVO">
+        select * from qna_img where boardNo = #{boardNo}
+    </select>
+    <delete id="deleteAll">
+        delete from qna_img where boardNo = #{boardNo}
+    </delete>
+</mapper>

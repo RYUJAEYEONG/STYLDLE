@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.styldle.mapper.HeartMapper">
+    <insert id="save">
+        insert into heart values(null, #{postId}, #{userId})
+    </insert>
+
+    <delete id="remove">
+        delete from heart where postId=#{postId} and userId=#{userId}
+    </delete>
+
+    <select id="getCount" resultType="int">
+        select count(*) from heart where postId=#{postId}
+    </select>
+
+    <select id="isClicked" resultType="com.styldle.vo.HeartVO">
+        select * from heart where postId=#{postId} and userId=#{userId}
+    </select>
+</mapper>

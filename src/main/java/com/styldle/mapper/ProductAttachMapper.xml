@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.styldle.mapper.ProductAttachMapper">
+
+	<insert id="insert">
+		insert into product_attach values(#{uuid}, #{uploadPath}, #{fileName}, #{productId})
+	</insert>
+
+	<delete id="delete">
+		delete from product_attach where uuid = #{uuid}
+	</delete>
+
+	<select id="findByProductId" resultType="com.styldle.vo.ProductAttachVO">
+		select * from product_attach where productId = #{productId}
+	</select>
+
+	<delete id="deleteAll">
+		delete from product_attach where productId = #{productId}
+	</delete>
+
+</mapper>
