@@ -227,24 +227,6 @@
                             </c:if>
                         </div>
 
-
-<%--                    <!-- Pagination -->--%>
-<%--                    <div id="pagination" class="flex-c-m flex-w w-full p-t-38">--%>
-<%--                        <c:if test="${pageMaker.prev}">--%>
-<%--                            <a href="${pageMaker.startPage - 1}" class="flex-c-m how-pagination1 trans-04 m-all-7"> << </a>--%>
-<%--                        </c:if>--%>
-<%--                        <c:forEach var="num" begin="${pageMaker.startPage}" end="${pageMaker.endPage}">--%>
-<%--                            <a href="${num}" class="flex-c-m how-pagination1 trans-04 m-all-7 ${pageMaker.cri.pageNum == num ? 'active-pagination1' : ''}">${num}</a>--%>
-<%--                        </c:forEach>--%>
-<%--                        <c:if test="${pageMaker.next}">--%>
-<%--                            <a href="${pageMaker.endPage + 1}" class="flex-c-m how-pagination1 trans-04 m-all-7"> >> </a>--%>
-<%--                        </c:if>--%>
-<%--                        <form action="/style/list" id='actionForm' method="get">--%>
-<%--                            <input type='hidden' name="pageNum" value="${pageMaker.cri.pageNum}"/>--%>
-<%--                            <input type='hidden' name="amount" value="${pageMaker.cri.amount}"/>--%>
-<%--                        </form>--%>
-<%--                    </div>--%>
-
                 </div>
 
             </div>
