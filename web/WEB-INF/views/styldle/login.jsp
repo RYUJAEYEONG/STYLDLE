@@ -97,38 +97,6 @@
 
                 </form>
             </div>
-
-<%--            <div class="size-210 bor10 flex-w flex-col-m p-lr-93 p-tb-30 p-lr-15-lg w-full-md">--%>
-<%--                <div class="flex-w w-full p-b-42">--%>
-
-<%--                    <div class="size-212 p-t-2">--%>
-<%--							<span class="mtext-110 cl2">--%>
-<%--								<a href="/styldle/register">회원가입</a>--%>
-<%--							</span>--%>
-
-<%--                    </div>--%>
-<%--                </div>--%>
-
-<%--                <div class="flex-w w-full p-b-42">--%>
-
-<%--                    <div class="size-212 p-t-2">--%>
-<%--							<span class="mtext-110 cl2">--%>
-<%--								<a href="/styldle/userdelete">회원 탈퇴</a>--%>
-<%--							</span>--%>
-
-<%--                    </div>--%>
-<%--                </div>--%>
-
-<%--                <div class="flex-w w-full">--%>
-
-<%--                    <div class="size-212 p-t-2">--%>
-<%--							<span class="mtext-110 cl2">--%>
-<%--								<a href="/styldle/chatting">실시간 채팅</a>--%>
-<%--							</span>--%>
-
-<%--                    </div>--%>
-<%--                </div>--%>
-<%--            </div>--%>
         </div>
     </div>
 </section>
